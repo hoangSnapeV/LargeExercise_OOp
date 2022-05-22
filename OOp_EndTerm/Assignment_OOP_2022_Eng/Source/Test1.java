@@ -9,5 +9,11 @@ public class Test1 {
             System.out.println(r1.get(i));
 
         }
+        ArrayList<TimeKeeping> r2 = manager.loadTimekeeping("./input/Timekeeping.txt");
+        for (int i = 0; i < r2.size(); i++) {
+            System.out.println(r2.get(i));
+
+        }
+
     }
 }

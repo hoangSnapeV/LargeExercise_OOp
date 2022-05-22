@@ -62,13 +62,44 @@ public class StoreManagement {
 
     // requirement 1
     public ArrayList<Staff> loadStaffs(String filePath) {
-        //code here and modify the return value
-        return null;
+        staffs = new ArrayList<Staff>();
+        ArrayList<String> listStaff = loadFile(filePath);
+
+        for (String st : listStaff) {
+            String[] information = st.split(",");
+            int x = information.length;
+            if (x == 3) {
+                staffs.add(new SeasonalStaff(information[0], information[1], Integer.parseInt(information[2])));
+            } else if (x == 4) {
+                staffs.add(new FullTimeStaff(information[0], information[1], Integer.parseInt(information[2]), Double.parseDouble(information[3])  ));
+            } else {
+                staffs.add(new Manager(information[0], information[1], Integer.parseInt(information[2]), Double.parseDouble(information[3]), Integer.parseInt(information[4])));
+            }
+            
+        }
+        return staffs;
     }
 
     // requirement 2
+    ArrayList<TimeKeeping> timeKepResult;
+
+    public ArrayList<TimeKeeping> loadTimekeeping(String filePath) {
+        timeKepResult = new ArrayList<TimeKeeping>();
+        ArrayList<String> times = loadFile(filePath);
+
+        for (String t : times) {
+            String[] information = t.split(",");
+            timeKepResult.add(new TimeKeeping(information[0], Integer.parseInt(information[1])));
+        }
+
+        return timeKepResult;
+    }
+
+
+
+
     public ArrayList<SeasonalStaff> getTopFiveSeasonalStaffsHighSalary() {
-        //code here and modify the return value
+        
         return null;
     }
 
