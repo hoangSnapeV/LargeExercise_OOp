@@ -81,7 +81,12 @@ public class StoreManagement {
     }
 
     // requirement 2
-    ArrayList<TimeKeeping> timeKepResult;
+    private ArrayList<TimeKeeping> timeKepResult;
+    private ArrayList<TimeKeeping> listPartTime;
+    private ArrayList<SeasonalStaff> listPartStaff;
+    
+    private ArrayList<FullTimeStaff> listFull_Staff = new ArrayList<FullTimeStaff>();
+    private ArrayList<TimeKeeping> listFullTime = new ArrayList<TimeKeeping>();
 
     public ArrayList<TimeKeeping> loadTimekeeping(String filePath) {
         timeKepResult = new ArrayList<TimeKeeping>();
@@ -89,18 +94,77 @@ public class StoreManagement {
 
         for (String t : times) {
             String[] information = t.split(",");
-            timeKepResult.add(new TimeKeeping(information[0], Integer.parseInt(information[1])));
+            timeKepResult.add(new TimeKeeping(information[0], Integer.parseInt(information[1]) ));
         }
 
         return timeKepResult;
     }
 
+    public void sortPartFullTime() {
+        //staffs = loadStaffs("./input/Staffs.txt");
+        listPartStaff = new ArrayList<SeasonalStaff>();
+        listPartTime = new ArrayList<TimeKeeping>();
+
+        for (Staff st : staffs) {
+            String x = st.sID.charAt(0) + "" + st.sID.charAt(1);
+            if(x.equals("TV")) {
+                listPartStaff.add((SeasonalStaff) st);
+            } else {
+                listFull_Staff.add((FullTimeStaff) st);
+            }
+        }
+        timeKepResult = loadTimekeeping("./input/Timekeeping.txt");
+        for (TimeKeeping t : timeKepResult) {
+            String x = t.getsID().charAt(0) + "" + t.getsID().charAt(1);
+            if(x.equals("TV")) {
+                listPartTime.add(t);
+            } else {
+                listFullTime.add(t);
+            }
+        }
+
+    }
 
 
 
     public ArrayList<SeasonalStaff> getTopFiveSeasonalStaffsHighSalary() {
+        sortPartFullTime();
+        ArrayList<SeasonalStaff> top5 = new ArrayList<SeasonalStaff>();
+        ArrayList<Double> kq = new ArrayList<Double>();
+        for (int i = 0; i < listPartStaff.size(); i++) {
+            for (int j = 0; j < listPartTime.size(); j++) {
+                String x = listPartStaff.get(i).sID;
+                String y = listPartTime.get(j).getsID();
+
+                if (x.equals(y)) {
+                    
+                    double money = listPartStaff.get(i).paySalary(listPartTime.get(j).getTime() );
+                    kq.add(money);
+                    break;
+                }
+            }
+        }
+
+        for (int i = 0; i < kq.size() - 1; i++) {
+            for (int j = i + 1; j < kq.size(); j++) {
+                if (kq.get(i) < kq.get(j)) {
+                    double temp = kq.get(i);
+                    kq.set(i, kq.get(j));
+                    kq.set(j, temp);
+
+                    SeasonalStaff temp1 = listPartStaff.get(i);
+                    listPartStaff.set(i, listPartStaff.get(j));
+                    listPartStaff.set(j, temp1);
+
+                }
+            }
+        }
+
+        for (int i = 0; i < 5; i++) {
+            top5.add(listPartStaff.get(i));
         
-        return null;
+        }
+        return top5;
     }
 
     // requirement 3

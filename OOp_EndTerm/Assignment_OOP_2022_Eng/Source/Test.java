@@ -6,8 +6,8 @@ public class Test {
 
         manager.writeFile("Req1.txt", manager.getStaffs());
 
-        // ArrayList<SeasonalStaff> Req2 = manager.getTopFiveSeasonalStaffsHighSalary();
-        // manager.writeFile("Req2.txt", Req2);
+        ArrayList<SeasonalStaff> Req2 = manager.getTopFiveSeasonalStaffsHighSalary();
+        manager.writeFile("Req2.txt", Req2);
 
         // ArrayList<FullTimeStaff> Req3 = manager.getFullTimeStaffsHaveSalaryGreaterThan(15000000);
         // manager.writeFile("Req3.txt", Req3);

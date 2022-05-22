@@ -1,16 +1,18 @@
 public class TimeKeeping {
-    private String sName;
+    private String sID;
     private int time;
-    
+
     public TimeKeeping(String sName, int time) {
-        this.sName = sName;
+        this.sID = sName;
         this.time = time;
     }
-    public String getsName() {
-        return sName;
+    
+    public String getsID() {
+        return sID;
     }
-    public void setsName(String sName) {
-        this.sName = sName;
+
+    public void setsID(String sID) {
+        this.sID = sID;
     }
     public int getTime() {
         return time;
@@ -20,6 +22,7 @@ public class TimeKeeping {
     }
     @Override
     public String toString() {
-        return sName + "_" + time;
+        return sID + "_" + time;
     }
+
 }
