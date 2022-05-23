@@ -24,9 +24,9 @@ public class FullTimeStaff extends Staff {
     @Override
     public double paySalary(int workedDays) {
         if (workedDays > 21) {
-            return baseSalary * bonusRate + (workedDays - 21) * 100000;
+            return baseSalary * bonusRate + (workedDays - 21) * 100000 * 1.0;
         }
-        return baseSalary * bonusRate;
+        return baseSalary * bonusRate * 1.0;
     }
 
     @Override

@@ -81,12 +81,13 @@ public class StoreManagement {
     }
 
     // requirement 2
-    private ArrayList<TimeKeeping> timeKepResult;
+    private ArrayList<TimeKeeping> timeKepResult = loadTimekeeping("./input/Timekeeping.txt");
     private ArrayList<TimeKeeping> listPartTime;
     private ArrayList<SeasonalStaff> listPartStaff;
-    
+    //
     private ArrayList<FullTimeStaff> listFull_Staff = new ArrayList<FullTimeStaff>();
     private ArrayList<TimeKeeping> listFullTime = new ArrayList<TimeKeeping>();
+
 
     public ArrayList<TimeKeeping> loadTimekeeping(String filePath) {
         timeKepResult = new ArrayList<TimeKeeping>();
@@ -100,8 +101,8 @@ public class StoreManagement {
         return timeKepResult;
     }
 
-    public void sortPartFullTime() {
-        //staffs = loadStaffs("./input/Staffs.txt");
+    public void sortPartTime() {
+        
         listPartStaff = new ArrayList<SeasonalStaff>();
         listPartTime = new ArrayList<TimeKeeping>();
 
@@ -109,28 +110,42 @@ public class StoreManagement {
             String x = st.sID.charAt(0) + "" + st.sID.charAt(1);
             if(x.equals("TV")) {
                 listPartStaff.add((SeasonalStaff) st);
-            } else {
-                listFull_Staff.add((FullTimeStaff) st);
             }
         }
-        timeKepResult = loadTimekeeping("./input/Timekeeping.txt");
+        
         for (TimeKeeping t : timeKepResult) {
             String x = t.getsID().charAt(0) + "" + t.getsID().charAt(1);
             if(x.equals("TV")) {
                 listPartTime.add(t);
-            } else {
-                listFullTime.add(t);
             }
         }
-
     }
 
+    //
+    
+    public void sortFullTime() {
 
+        for (Staff st : staffs) {
+            String x = st.sID.charAt(0) + "" + st.sID.charAt(1);
+            if(!x.equals("TV")) {
+                listFull_Staff.add((FullTimeStaff) st);
+            } 
+        }
+        
+        for (TimeKeeping t : timeKepResult) {
+            String x = t.getsID().charAt(0) + "" + t.getsID().charAt(1);
+            if(!x.equals("TV")) {
+                listFullTime.add(t);
+            } 
+        }
+    }
+ 
 
     public ArrayList<SeasonalStaff> getTopFiveSeasonalStaffsHighSalary() {
-        sortPartFullTime();
+        sortPartTime();
         ArrayList<SeasonalStaff> top5 = new ArrayList<SeasonalStaff>();
         ArrayList<Double> kq = new ArrayList<Double>();
+
         for (int i = 0; i < listPartStaff.size(); i++) {
             for (int j = 0; j < listPartTime.size(); j++) {
                 String x = listPartStaff.get(i).sID;
@@ -169,8 +184,32 @@ public class StoreManagement {
 
     // requirement 3
     public ArrayList<FullTimeStaff> getFullTimeStaffsHaveSalaryGreaterThan(int lowerBound) {
-        //code here and modify the return value
-        return null;
+        sortFullTime();
+        // for (int i = 0; i < listFull_Staff.size(); i++) {
+        //     System.out.println(listFull_Staff.get(i));
+        // }
+        // for (int i = 0; i < listFullTime.size(); i++) {
+        //     System.out.println(listFullTime.get(i));
+        // }
+        // ArrayList<Double> kq1 = new ArrayList<Double>();
+        ArrayList<FullTimeStaff> listHigh = new ArrayList<FullTimeStaff>();
+        
+        for (int i = 0; i < listFull_Staff.size(); i++) {
+            for (int j = 0; j < listFullTime.size(); j++) {
+                String x = listFull_Staff.get(i).sID;
+                String y = listFullTime.get(j).getsID();
+
+                if (x.equals(y)) {
+                    
+                    double money = listFull_Staff.get(i).paySalary(listFullTime.get(j).getTime());
+                    if (money > lowerBound) {
+                        listHigh.add(listFull_Staff.get(i));
+                    }
+                    break;
+                }
+            }
+        }
+        return listHigh;
     }
 
     // requirement 4

@@ -11,7 +11,7 @@ public class Manager extends FullTimeStaff {
 
     @Override 
     public double paySalary(int workedDays) {
-        return super.paySalary(workedDays) + allowance;
+        return super.paySalary(workedDays) + allowance * 1.0;
     }
 
     @Override 

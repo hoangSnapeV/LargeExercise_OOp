@@ -19,7 +19,9 @@ public class Test1 {
 
         // }
         //manager.sortPartFullTime();
-        manager.getTopFiveSeasonalStaffsHighSalary();
+        //manager.getTopFiveSeasonalStaffsHighSalary();
+        manager.getFullTimeStaffsHaveSalaryGreaterThan(15000000);
+
 
     }
 }

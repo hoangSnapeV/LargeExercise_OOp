@@ -1,0 +1,24 @@
+
+QL002,20
+
+QL003,24
+CT001,31
+CT002,19
+
+CT003,18
+CT004,23
+CT005,14
+CT006,28
+CT007,21
+
+CT008,4
+CT009,26
+
+
+CT010,16
+QL001,18
+
+if (workedDays > 21) {
+            return baseSalary * bonusRate + (workedDays - 21) * 100000 * 1.0;
+        }
+        return baseSalary * bonusRate * 1.0;
