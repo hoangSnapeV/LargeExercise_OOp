@@ -270,11 +270,64 @@ public class StoreManagement {
 
         return total;
     }
-
     // requirement 5
+    ArrayList<Invoice> listBillMonth = new ArrayList<Invoice>();
+    ArrayList<Double> billMonthPrice = new ArrayList<Double>();
+
+    public void billStaffMonth(int month){
+        totalBillMonth();
+        for (int i = 0; i < invoices.size(); i++) {
+            String date = invoices.get(i).getDate();
+            String[] information = date.split("/");
+
+            int m = Integer.parseInt(information[1]) ;
+            if (m == month) {
+                listBillMonth.add(invoices.get(i));
+                billMonthPrice.add(totalBill.get(i));
+            }
+        }
+
+        // for (int i = 0; i < listBillMonth.size(); i++) {
+        //     System.out.println(listBillMonth.get(i) + " " + billMonthPrice.get(i));
+        // }
+    }
+    
+    ArrayList<Double> sumPriceStaffMonth = new ArrayList<Double>();
+
     public Staff getStaffHighestBillInMonth(int month) {
         Staff maxStaff = null;
-        //code here
+
+        billStaffMonth(month);
+        double moneyMonth = 0;
+        // for (int i = 0; i < listBillMonth.size(); i++) {
+        //     System.out.println(listBillMonth.get(i));
+        // }
+
+        for (int i = 0; i < staffs.size(); i++) {
+            for (int j = 0; j < listBillMonth.size(); j++) {
+                String x = staffs.get(i).getsID();
+                String y = listBillMonth.get(j).getStaffID();
+                
+                if (x.equals(y)) {
+                    moneyMonth = moneyMonth + billMonthPrice.get(j);
+                }
+            }
+            sumPriceStaffMonth.add(moneyMonth);
+            moneyMonth = 0.0;
+        }
+
+        // for (int i = 0; i < sumPriceStaffMonth.size(); i++) {
+        //     System.out.println(sumPriceStaffMonth.get(i));
+        // }
+        double maxPrice = sumPriceStaffMonth.get(0);
+        int index = 0;
+        for (int i = 1; i < sumPriceStaffMonth.size(); i++) {
+            if (maxPrice < sumPriceStaffMonth.get(i)) {
+                maxPrice = sumPriceStaffMonth.get(i);
+                index = i;
+            }
+        }
+        maxStaff = staffs.get(index);
         return maxStaff;
     }
 

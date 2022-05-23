@@ -15,8 +15,8 @@ public class Test {
         double Req4 = manager.totalInQuarter(1);
         manager.writeFile("Req4.txt", Req4);
 
-        // Staff Req5 = manager.getStaffHighestBillInMonth(6);
-        // manager.writeFile("Req5.txt", Req5);
+        Staff Req5 = manager.getStaffHighestBillInMonth(6);
+        manager.writeFile("Req5.txt", Req5);
     }
 
 }
