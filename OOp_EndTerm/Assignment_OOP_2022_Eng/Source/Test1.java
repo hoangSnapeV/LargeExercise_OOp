@@ -20,7 +20,8 @@ public class Test1 {
         // }
         //manager.sortPartFullTime();
         //manager.getTopFiveSeasonalStaffsHighSalary();
-        manager.getFullTimeStaffsHaveSalaryGreaterThan(15000000);
+        //manager.getFullTimeStaffsHaveSalaryGreaterThan(15000000);
+        manager.totalBillMonth();
 
 
     }

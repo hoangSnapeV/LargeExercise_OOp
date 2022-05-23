@@ -1,7 +1,7 @@
 public class Invoice {
     private String invoiceID;
     private String staffID;
-    private String date;
+    private String date;    
 
     public Invoice(String invoiceID, String staffID, String date) {
         this.invoiceID = invoiceID;

@@ -12,8 +12,8 @@ public class Test {
         ArrayList<FullTimeStaff> Req3 = manager.getFullTimeStaffsHaveSalaryGreaterThan(15000000);
         manager.writeFile("Req3.txt", Req3);
 
-        // double Req4 = manager.totalInQuarter(1);
-        // manager.writeFile("Req4.txt", Req4);
+        double Req4 = manager.totalInQuarter(1);
+        manager.writeFile("Req4.txt", Req4);
 
         // Staff Req5 = manager.getStaffHighestBillInMonth(6);
         // manager.writeFile("Req5.txt", Req5);

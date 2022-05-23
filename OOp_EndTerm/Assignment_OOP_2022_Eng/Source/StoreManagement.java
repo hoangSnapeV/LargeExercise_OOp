@@ -1,6 +1,8 @@
 import java.io.*;
 import java.util.*;
 
+import javax.lang.model.util.ElementScanner14;
+
 public class StoreManagement {
     private ArrayList<Staff> staffs;
     private ArrayList<String> workingTime;
@@ -139,7 +141,7 @@ public class StoreManagement {
             } 
         }
     }
- 
+
 
     public ArrayList<SeasonalStaff> getTopFiveSeasonalStaffsHighSalary() {
         sortPartTime();
@@ -213,9 +215,59 @@ public class StoreManagement {
     }
 
     // requirement 4
+    ArrayList<Double> totalBill = new ArrayList<Double>();
+
+    public void totalBillMonth() {
+        
+        double money = 0;
+        for (int i = 0; i < invoices.size(); i++) {
+            for (int j = 0; j < invoiceDetails.size(); j++) {
+                String x = invoices.get(i).getInvoiceID();
+                String y = invoiceDetails.get(j).getInvoiceID();
+
+                if (x.equals(y)) {
+                    String nameDrink = invoiceDetails.get(j).getDName();  // name of details
+
+                    for (int k = 0; k < drinks.size(); k++) {
+                        String z = drinks.get(k).getdName(); //name of drinks
+                        if (nameDrink.equals(z) ) {
+                            money = money + invoiceDetails.get(j).getAmount() * drinks.get(k).getPrice();
+                            break;
+                        }
+                    }
+                }
+            }
+            totalBill.add(money);
+            money = 0.0;
+
+        }
+        // for (int i = 0; i < totalBill.size(); i++) {
+        //     System.out.println(i + ", " +totalBill.get(i));
+        // }
+    }
+    
     public double totalInQuarter(int quarter) {
         double total = 0;
-        // code here
+        
+        totalBillMonth();
+
+        for (int i = 0; i < invoices.size(); i++) {
+            String date = invoices.get(i).getDate();
+            String[] information = date.split("/");
+            int month = Integer.parseInt(information[1]) ;
+
+            if (quarter == 1 && month <= 3 && month > 0) {
+               total = total + totalBill.get(i);
+            } else if (quarter == 2 && month <= 6 && month >= 4) {
+                total = total + totalBill.get(i);
+            } else if (quarter == 3 && month <= 9 && month >= 7) {
+                total = total + totalBill.get(i);
+            } else if (quarter == 4 && month <= 12 && month >= 10) {
+                total = total + totalBill.get(i);
+            } 
+        }   
+        
+
         return total;
     }
 
