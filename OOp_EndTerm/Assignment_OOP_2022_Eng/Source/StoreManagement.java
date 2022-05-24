@@ -1,18 +1,16 @@
 import java.io.*;
 import java.util.*;
 
-import javax.lang.model.util.ElementScanner14;
-
 public class StoreManagement {
     private ArrayList<Staff> staffs;
-    private ArrayList<String> workingTime;
+    private ArrayList<TimeKeeping> workingTime;
     private ArrayList<Invoice> invoices;
     private ArrayList<InvoiceDetails> invoiceDetails;
     private ArrayList<Drink> drinks;
 
     public StoreManagement(String staffPath, String workingTimePath, String invoicesPath, String detailsPath, String drinksPath) {
         this.staffs = loadStaffs(staffPath);
-        this.workingTime = loadFile(workingTimePath);
+        this.workingTime = loadTimekeeping(workingTimePath);
         this.invoices = loadInvoices(invoicesPath);
         this.invoiceDetails = loadInvoicesDetails(detailsPath);
         this.drinks = loadDrinks(drinksPath);
@@ -83,7 +81,8 @@ public class StoreManagement {
     }
 
     // requirement 2
-    private ArrayList<TimeKeeping> timeKepResult = loadTimekeeping("./input/Timekeeping.txt");
+    
+
     private ArrayList<TimeKeeping> listPartTime;
     private ArrayList<SeasonalStaff> listPartStaff;
     //
@@ -92,15 +91,15 @@ public class StoreManagement {
 
 
     public ArrayList<TimeKeeping> loadTimekeeping(String filePath) {
-        timeKepResult = new ArrayList<TimeKeeping>();
+        workingTime = new ArrayList<TimeKeeping>();
         ArrayList<String> times = loadFile(filePath);
 
         for (String t : times) {
             String[] information = t.split(",");
-            timeKepResult.add(new TimeKeeping(information[0], Integer.parseInt(information[1]) ));
+            workingTime.add(new TimeKeeping(information[0], Integer.parseInt(information[1]) ));
         }
 
-        return timeKepResult;
+        return workingTime;
     }
 
     public void sortPartTime() {
@@ -115,7 +114,7 @@ public class StoreManagement {
             }
         }
         
-        for (TimeKeeping t : timeKepResult) {
+        for (TimeKeeping t : workingTime) {
             String x = t.getsID().charAt(0) + "" + t.getsID().charAt(1);
             if(x.equals("TV")) {
                 listPartTime.add(t);
@@ -125,24 +124,6 @@ public class StoreManagement {
 
     //
     
-    public void sortFullTime() {
-
-        for (Staff st : staffs) {
-            String x = st.sID.charAt(0) + "" + st.sID.charAt(1);
-            if(!x.equals("TV")) {
-                listFull_Staff.add((FullTimeStaff) st);
-            } 
-        }
-        
-        for (TimeKeeping t : timeKepResult) {
-            String x = t.getsID().charAt(0) + "" + t.getsID().charAt(1);
-            if(!x.equals("TV")) {
-                listFullTime.add(t);
-            } 
-        }
-    }
-
-
     public ArrayList<SeasonalStaff> getTopFiveSeasonalStaffsHighSalary() {
         sortPartTime();
         ArrayList<SeasonalStaff> top5 = new ArrayList<SeasonalStaff>();
@@ -185,15 +166,27 @@ public class StoreManagement {
     }
 
     // requirement 3
+    
+    public void sortFullTime() {
+
+        for (Staff st : staffs) {
+            String x = st.sID.charAt(0) + "" + st.sID.charAt(1);
+            if(!x.equals("TV")) {
+                listFull_Staff.add((FullTimeStaff) st);
+            } 
+        }
+        
+        for (TimeKeeping t : workingTime) {
+            String x = t.getsID().charAt(0) + "" + t.getsID().charAt(1);
+            if(!x.equals("TV")) {
+                listFullTime.add(t);
+            } 
+        }
+    }
+
     public ArrayList<FullTimeStaff> getFullTimeStaffsHaveSalaryGreaterThan(int lowerBound) {
         sortFullTime();
-        // for (int i = 0; i < listFull_Staff.size(); i++) {
-        //     System.out.println(listFull_Staff.get(i));
-        // }
-        // for (int i = 0; i < listFullTime.size(); i++) {
-        //     System.out.println(listFullTime.get(i));
-        // }
-        // ArrayList<Double> kq1 = new ArrayList<Double>();
+    
         ArrayList<FullTimeStaff> listHigh = new ArrayList<FullTimeStaff>();
         
         for (int i = 0; i < listFull_Staff.size(); i++) {
@@ -241,9 +234,6 @@ public class StoreManagement {
             money = 0.0;
 
         }
-        // for (int i = 0; i < totalBill.size(); i++) {
-        //     System.out.println(i + ", " +totalBill.get(i));
-        // }
     }
     
     public double totalInQuarter(int quarter) {
@@ -270,6 +260,7 @@ public class StoreManagement {
 
         return total;
     }
+    
     // requirement 5
     ArrayList<Invoice> listBillMonth = new ArrayList<Invoice>();
     ArrayList<Double> billMonthPrice = new ArrayList<Double>();
@@ -287,9 +278,6 @@ public class StoreManagement {
             }
         }
 
-        // for (int i = 0; i < listBillMonth.size(); i++) {
-        //     System.out.println(listBillMonth.get(i) + " " + billMonthPrice.get(i));
-        // }
     }
     
     ArrayList<Double> sumPriceStaffMonth = new ArrayList<Double>();
@@ -299,9 +287,6 @@ public class StoreManagement {
 
         billStaffMonth(month);
         double moneyMonth = 0;
-        // for (int i = 0; i < listBillMonth.size(); i++) {
-        //     System.out.println(listBillMonth.get(i));
-        // }
 
         for (int i = 0; i < staffs.size(); i++) {
             for (int j = 0; j < listBillMonth.size(); j++) {
@@ -316,9 +301,6 @@ public class StoreManagement {
             moneyMonth = 0.0;
         }
 
-        // for (int i = 0; i < sumPriceStaffMonth.size(); i++) {
-        //     System.out.println(sumPriceStaffMonth.get(i));
-        // }
         double maxPrice = sumPriceStaffMonth.get(0);
         int index = 0;
         for (int i = 1; i < sumPriceStaffMonth.size(); i++) {
@@ -330,6 +312,8 @@ public class StoreManagement {
         maxStaff = staffs.get(index);
         return maxStaff;
     }
+
+
 
     // load file as list
     public static ArrayList<String> loadFile(String filePath) {
