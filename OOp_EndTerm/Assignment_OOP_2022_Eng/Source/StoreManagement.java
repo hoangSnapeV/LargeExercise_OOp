@@ -3,14 +3,14 @@ import java.util.*;
 
 public class StoreManagement {
     private ArrayList<Staff> staffs;
-    private ArrayList<TimeKeeping> workingTime;
+    private ArrayList<String> workingTime;
     private ArrayList<Invoice> invoices;
     private ArrayList<InvoiceDetails> invoiceDetails;
     private ArrayList<Drink> drinks;
 
     public StoreManagement(String staffPath, String workingTimePath, String invoicesPath, String detailsPath, String drinksPath) {
         this.staffs = loadStaffs(staffPath);
-        this.workingTime = loadTimekeeping(workingTimePath);
+        this.workingTime = loadFile(workingTimePath);
         this.invoices = loadInvoices(invoicesPath);
         this.invoiceDetails = loadInvoicesDetails(detailsPath);
         this.drinks = loadDrinks(drinksPath);
@@ -83,29 +83,27 @@ public class StoreManagement {
     // requirement 2
     
 
-    private ArrayList<TimeKeeping> listPartTime;
+    private ArrayList<String> listPartTime;
+
     private ArrayList<SeasonalStaff> listPartStaff;
     //
     private ArrayList<FullTimeStaff> listFull_Staff = new ArrayList<FullTimeStaff>();
-    private ArrayList<TimeKeeping> listFullTime = new ArrayList<TimeKeeping>();
+    private ArrayList<String> listFullTime = new ArrayList<String>();
 
+    public String getIdTimeKeeping(String x ) {
+        String[] information = x.split(",");
+        return information[0];
+    }
 
-    public ArrayList<TimeKeeping> loadTimekeeping(String filePath) {
-        workingTime = new ArrayList<TimeKeeping>();
-        ArrayList<String> times = loadFile(filePath);
-
-        for (String t : times) {
-            String[] information = t.split(",");
-            workingTime.add(new TimeKeeping(information[0], Integer.parseInt(information[1]) ));
-        }
-
-        return workingTime;
+    public int geAmountTimeKeeping(String x) {
+        String[] information = x.split(",");
+        return Integer.parseInt(information[1]);
     }
 
     public void sortPartTime() {
         
         listPartStaff = new ArrayList<SeasonalStaff>();
-        listPartTime = new ArrayList<TimeKeeping>();
+        listPartTime = new ArrayList<String>();
 
         for (Staff st : staffs) {
             String x = st.sID.charAt(0) + "" + st.sID.charAt(1);
@@ -114,12 +112,15 @@ public class StoreManagement {
             }
         }
         
-        for (TimeKeeping t : workingTime) {
-            String x = t.getsID().charAt(0) + "" + t.getsID().charAt(1);
+    
+        for (int i = 0; i < workingTime.size(); i++) {
+            String x = workingTime.get(i).charAt(0) + "" + workingTime.get(i).charAt(1);
             if(x.equals("TV")) {
-                listPartTime.add(t);
+                listPartTime.add(workingTime.get(i));
             }
         }
+
+
     }
 
     //
@@ -131,12 +132,14 @@ public class StoreManagement {
 
         for (int i = 0; i < listPartStaff.size(); i++) {
             for (int j = 0; j < listPartTime.size(); j++) {
+
                 String x = listPartStaff.get(i).sID;
-                String y = listPartTime.get(j).getsID();
+                String y = getIdTimeKeeping(listPartTime.get(j));
+
 
                 if (x.equals(y)) {
                     
-                    double money = listPartStaff.get(i).paySalary(listPartTime.get(j).getTime() );
+                    double money = listPartStaff.get(i).paySalary(geAmountTimeKeeping(listPartTime.get(j)) );
                     kq.add(money);
                     break;
                 }
@@ -176,12 +179,13 @@ public class StoreManagement {
             } 
         }
         
-        for (TimeKeeping t : workingTime) {
-            String x = t.getsID().charAt(0) + "" + t.getsID().charAt(1);
+        for (int i = 0; i < workingTime.size(); i++) {
+            String x = workingTime.get(i).charAt(0) + "" + workingTime.get(i).charAt(1);
             if(!x.equals("TV")) {
-                listFullTime.add(t);
-            } 
+                listFullTime.add(workingTime.get(i));
+            }
         }
+        
     }
 
     public ArrayList<FullTimeStaff> getFullTimeStaffsHaveSalaryGreaterThan(int lowerBound) {
@@ -192,11 +196,11 @@ public class StoreManagement {
         for (int i = 0; i < listFull_Staff.size(); i++) {
             for (int j = 0; j < listFullTime.size(); j++) {
                 String x = listFull_Staff.get(i).sID;
-                String y = listFullTime.get(j).getsID();
+                String y = getIdTimeKeeping(listFullTime.get(j)) ;
 
                 if (x.equals(y)) {
                     
-                    double money = listFull_Staff.get(i).paySalary(listFullTime.get(j).getTime());
+                    double money = listFull_Staff.get(i).paySalary(geAmountTimeKeeping(listFullTime.get(j)));
                     if (money > lowerBound) {
                         listHigh.add(listFull_Staff.get(i));
                     }

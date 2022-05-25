@@ -10,7 +10,7 @@ public class Test1 {
 
         // }
         ArrayList<Staff> r3 = manager.loadStaffs("./input/Staffs.txt");
-        ArrayList<TimeKeeping> r2 = manager.loadTimekeeping("./input/Timekeeping.txt");
+        
         
         
 

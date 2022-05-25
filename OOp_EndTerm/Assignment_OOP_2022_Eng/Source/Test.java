@@ -18,5 +18,4 @@ public class Test {
         Staff Req5 = manager.getStaffHighestBillInMonth(6);
         manager.writeFile("Req5.txt", Req5);
     }
-
 }
